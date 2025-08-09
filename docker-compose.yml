@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   # Main Tauri builder service
-  tauri-builder:
+  tauridock:
     build:
       context: .
       dockerfile: Dockerfile
@@ -11,8 +11,8 @@ services:
         NODE_VERSION: 20
         PLATFORM: linux
         ARCH: x64
-    image: tauri-builder:latest
-    container_name: tauri-builder-main
+    image: tauridock:latest
+    container_name: tauridock-main
     volumes:
       # Mount project directory
       - .:/app
@@ -26,7 +26,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     ports:
       # Frontend port
-      - "3000:3000"
+      - "3003:3003"
       # Tauri dev server
       - "1420:1420"
       # HMR websocket
@@ -35,7 +35,7 @@ services:
       - MODE=${MODE:-build}
       - PLATFORM=${PLATFORM:-linux}
       - ARCH=${ARCH:-x64}
-      - FRONTEND_PORT=${FRONTEND_PORT:-3000}
+      - FRONTEND_PORT=${FRONTEND_PORT:-3003}
       - RUST_BACKTRACE=1
       - NODE_ENV=${NODE_ENV:-production}
       - DOCKER_BUILDKIT=1
@@ -50,8 +50,8 @@ services:
       context: .
       dockerfile: Dockerfile
       target: windows-builder
-    image: tauri-builder:windows
-    container_name: tauri-builder-windows
+    image: tauridock:windows
+    container_name: tauridock-windows
     profiles:
       - windows
     volumes:
@@ -72,8 +72,8 @@ services:
       context: .
       dockerfile: Dockerfile
       target: macos-builder
-    image: tauri-builder:macos
-    container_name: tauri-builder-macos
+    image: tauridock:macos
+    container_name: tauridock-macos
     profiles:
       - macos
     volumes:
@@ -94,8 +94,8 @@ services:
       context: .
       dockerfile: Dockerfile
       target: arm64-builder
-    image: tauri-builder:arm64
-    container_name: tauri-builder-arm64
+    image: tauridock:arm64
+    container_name: tauridock-arm64
     profiles:
       - arm64
     volumes:
@@ -188,7 +188,7 @@ services:
     networks:
       - tauri-network
     depends_on:
-      - tauri-builder
+      - tauridock
 
   # Monitoring with Prometheus
   prometheus:
@@ -221,7 +221,7 @@ services:
       - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
       - ./monitoring/grafana/datasources:/etc/grafana/provisioning/datasources:ro
     ports:
-      - "3001:3000"
+      - "3001:3003"
     networks:
       - tauri-network
     depends_on:

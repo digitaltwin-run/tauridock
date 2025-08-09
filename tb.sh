@@ -17,7 +17,7 @@ NC='\033[0m' # No Color
 # Configuration
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PYTHON_CMD="${PYTHON_CMD:-python3}"
-CONFIG_FILE="${CONFIG_FILE:-.tauri-builder.yml}"
+CONFIG_FILE="${CONFIG_FILE:-.tauridock.yml}"
 ENV_FILE="${ENV_FILE:-.env}"
 
 # Version
@@ -59,8 +59,8 @@ ${GREEN}Quick Commands:${NC}
   ${YELLOW}arm${NC}        Build for ARM64
 
 ${GREEN}Options:${NC}
-  --config FILE    Use custom config file (default: .tauri-builder.yml)
-  --port PORT      Frontend port (default: 3000)
+  --config FILE    Use custom config file (default: .tauridock.yml)
+  --port PORT      Frontend port (default: 3003)
   --debug          Enable debug mode
   --docker         Use Docker for building
   --native         Use native toolchain
@@ -110,7 +110,7 @@ check_requirements() {
 }
 
 run_tauri_builder() {
-    local cmd="$PYTHON_CMD $SCRIPT_DIR/tauri-builder.py"
+    local cmd="$PYTHON_CMD $SCRIPT_DIR/tauridock.py"
 
     # Add default options
     if [ -f "$CONFIG_FILE" ]; then
@@ -125,7 +125,7 @@ run_tauri_builder() {
 
     # Add frontend port if not specified
     if [[ ! "$@" =~ "--frontend-port" ]]; then
-        cmd="$cmd --frontend-port ${FRONTEND_PORT:-3000}"
+        cmd="$cmd --frontend-port ${FRONTEND_PORT:-3003}"
     fi
 
     # Execute command
@@ -174,14 +174,14 @@ cmd_docker() {
     case "$subcmd" in
         build)
             echo -e "${GREEN}Building Docker image...${NC}"
-            docker build -t tauri-builder:latest .
+            docker build -t tauridock:latest .
             ;;
         run)
             echo -e "${GREEN}Running Docker container...${NC}"
             docker run -it --rm \
                 -v $(pwd):/app \
-                -p 3000:3000 \
-                tauri-builder:latest "$@"
+                -p 3003:3003 \
+                tauridock:latest "$@"
             ;;
         compose)
             echo -e "${GREEN}Starting Docker Compose...${NC}"
@@ -189,7 +189,7 @@ cmd_docker() {
             ;;
         push)
             echo -e "${GREEN}Pushing Docker image...${NC}"
-            docker push tauri-builder:latest
+            docker push tauridock:latest
             ;;
         *)
             echo -e "${RED}Unknown docker command: $subcmd${NC}"
@@ -210,7 +210,7 @@ cmd_setup() {
         echo "Creating default configuration..."
         cat > "$CONFIG_FILE" << 'EOF'
 dockerfile: ./Dockerfile
-frontend_port: 3000
+frontend_port: 3003
 platforms:
   - windows
   - macos
@@ -235,7 +235,7 @@ EOF
 # DOCKER_HOST=unix:///var/run/docker.sock
 
 # Frontend port
-FRONTEND_PORT=3000
+FRONTEND_PORT=3003
 
 # Build settings
 NODE_ENV=production

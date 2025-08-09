@@ -1,0 +1,169 @@
+{
+  "name": "example-tauri-app",
+  "version": "1.0.0",
+  "description": "Example Tauri application for testing the builder",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "tauri": "tauri",
+    "tauri:dev": "tauri dev",
+    "tauri:build": "tauri build"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^1.5.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^1.5.9",
+    "@types/react": "^18.2.48",
+    "@types/react-dom": "^18.2.18",
+    "@vitejs/plugin-react": "^4.2.1",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.11"
+  },
+  "tauri": {
+    "allowlist": {
+      "all": false,
+      "shell": {
+        "all": false,
+        "open": true
+      },
+      "window": {
+        "all": true
+      },
+      "dialog": {
+        "all": true
+      },
+      "fs": {
+        "all": true,
+        "scope": ["$APP", "$RESOURCE"]
+      },
+      "path": {
+        "all": true
+      },
+      "notification": {
+        "all": true
+      }
+    },
+    "bundle": {
+      "active": true,
+      "category": "DeveloperTool",
+      "copyright": "© 2024 Example Corp",
+      "deb": {
+        "depends": []
+      },
+      "externalBin": [],
+      "icon": [
+        "icons/32x32.png",
+        "icons/128x128.png",
+        "icons/128x128@2x.png",
+        "icons/icon.icns",
+        "icons/icon.ico"
+      ],
+      "identifier": "com.example.tauri-app",
+      "longDescription": "A comprehensive example Tauri application showcasing multi-platform builds",
+      "macOS": {
+        "entitlements": null,
+        "exceptionDomain": "",
+        "frameworks": [],
+        "providerShortName": null,
+        "signingIdentity": null
+      },
+      "resources": [],
+      "shortDescription": "Example Tauri App",
+      "targets": {
+        "windows": ["msi", "nsis"],
+        "linux": ["deb", "AppImage", "rpm"],
+        "macOS": ["dmg", "app"]
+      },
+      "windows": {
+        "certificateThumbprint": null,
+        "digestAlgorithm": "sha256",
+        "timestampUrl": "",
+        "webviewInstallMode": {
+          "type": "embedBootstrapper"
+        },
+        "wix": {
+          "language": "en-US",
+          "template": null,
+          "fragmentPaths": [],
+          "componentGroupRefs": [],
+          "componentRefs": [],
+          "featureGroupRefs": [],
+          "featureRefs": [],
+          "mergeRefs": [],
+          "skipWebviewInstall": false,
+          "license": null,
+          "bannerPath": null,
+          "dialogImagePath": null
+        },
+        "nsis": {
+          "license": null,
+          "headerImage": null,
+          "sidebarImage": null,
+          "installerIcon": null,
+          "installMode": "both",
+          "languages": ["English"],
+          "displayLanguageSelector": false,
+          "customLanguageFiles": []
+        }
+      }
+    },
+    "security": {
+      "csp": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'"
+    },
+    "updater": {
+      "active": true,
+      "endpoints": [
+        "https://api.example.com/tauri-updates/{{target}}/{{current_version}}"
+      ],
+      "dialog": true,
+      "pubkey": ""
+    },
+    "windows": [
+      {
+        "title": "Example Tauri App",
+        "width": 1200,
+        "height": 800,
+        "resizable": true,
+        "fullscreen": false,
+        "alwaysOnTop": false,
+        "decorations": true,
+        "transparent": false,
+        "skipTaskbar": false,
+        "fileDropEnabled": true,
+        "center": true,
+        "minWidth": 600,
+        "minHeight": 400,
+        "maxWidth": null,
+        "maxHeight": null,
+        "visible": true,
+        "focus": true,
+        "acceptFirstMouse": false,
+        "tabbing": true,
+        "tabbingIdentifier": null,
+        "additionalBrowserArgs": null,
+        "theme": null
+      }
+    ],
+    "cli": {
+      "description": "Example Tauri App CLI",
+      "longDescription": null,
+      "beforeHelp": null,
+      "afterHelp": null,
+      "args": [],
+      "subcommands": {}
+    },
+    "plugins": {}
+  },
+  "build": {
+    "distDir": "../dist",
+    "devPath": "http://localhost:3000",
+    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "npm run build",
+    "withGlobalTauri": false
+  }
+}

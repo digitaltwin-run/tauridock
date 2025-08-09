@@ -8,7 +8,7 @@ PYTHON := python3
 PIP := $(PYTHON) -m pip
 DOCKER := docker
 DOCKER_COMPOSE := docker-compose
-PROJECT_NAME := tauri-builder
+PROJECT_NAME := tauridock
 VERSION := $(shell cat VERSION 2>/dev/null || echo "1.0.0")
 PLATFORMS := windows,macos,linux
 ARCHITECTURES := x64,arm64
@@ -42,11 +42,11 @@ install-dev: ## Install development dependencies
 	$(PIP) install -e ".[dev]"
 	@echo "$(GREEN)Development setup complete!$(NC)"
 
-install-global: ## Install tauri-builder globally
-	@echo "$(GREEN)Installing tauri-builder globally...$(NC)"
+install-global: ## Install tauridock globally
+	@echo "$(GREEN)Installing tauridock globally...$(NC)"
 	$(PIP) install -e .
 	@echo "$(GREEN)Global installation complete!$(NC)"
-	@echo "You can now use 'tauri-builder' or 'tb' command"
+	@echo "You can now use 'tauridock' or 'tb' command"
 
 # Testing targets
 test: ## Run unit tests
@@ -67,9 +67,9 @@ test-all: test test-integration ## Run all tests
 # Build targets
 build: ## Build for all platforms
 	@echo "$(GREEN)Building for all platforms...$(NC)"
-	$(PYTHON) tauri-builder.py \
+	$(PYTHON) tauridock.py \
 		--dockerfile ./Dockerfile \
-		--frontend-port 3000 \
+		--frontend-port 3003 \
 		--mode build \
 		--platforms $(PLATFORMS) \
 		--arch $(ARCHITECTURES) \
@@ -77,9 +77,9 @@ build: ## Build for all platforms
 
 build-windows: ## Build for Windows only
 	@echo "$(GREEN)Building for Windows...$(NC)"
-	$(PYTHON) tauri-builder.py \
+	$(PYTHON) tauridock.py \
 		--dockerfile ./Dockerfile \
-		--frontend-port 3000 \
+		--frontend-port 3003 \
 		--mode build \
 		--platforms windows \
 		--arch x64 \
@@ -87,9 +87,9 @@ build-windows: ## Build for Windows only
 
 build-linux: ## Build for Linux only
 	@echo "$(GREEN)Building for Linux...$(NC)"
-	$(PYTHON) tauri-builder.py \
+	$(PYTHON) tauridock.py \
 		--dockerfile ./Dockerfile \
-		--frontend-port 3000 \
+		--frontend-port 3003 \
 		--mode build \
 		--platforms linux \
 		--arch x64,arm64 \
@@ -97,9 +97,9 @@ build-linux: ## Build for Linux only
 
 build-macos: ## Build for macOS only
 	@echo "$(GREEN)Building for macOS...$(NC)"
-	$(PYTHON) tauri-builder.py \
+	$(PYTHON) tauridock.py \
 		--dockerfile ./Dockerfile \
-		--frontend-port 3000 \
+		--frontend-port 3003 \
 		--mode build \
 		--platforms macos \
 		--arch x64,arm64 \
@@ -108,9 +108,9 @@ build-macos: ## Build for macOS only
 # Development targets
 dev: ## Run in development mode
 	@echo "$(GREEN)Starting development mode...$(NC)"
-	$(PYTHON) tauri-builder.py \
+	$(PYTHON) tauridock.py \
 		--dockerfile ./Dockerfile \
-		--frontend-port 3000 \
+		--frontend-port 3003 \
 		--mode dev \
 		--hot-reload \
 		--devtools \
@@ -118,7 +118,7 @@ dev: ## Run in development mode
 
 dev-docker: ## Run development mode with docker-compose
 	@echo "$(GREEN)Starting development with Docker Compose...$(NC)"
-	MODE=dev $(DOCKER_COMPOSE) up tauri-builder
+	MODE=dev $(DOCKER_COMPOSE) up tauridock
 
 # Docker targets
 docker-build: ## Build Docker image
@@ -135,7 +135,7 @@ docker-run: ## Run Docker container
 	@echo "$(GREEN)Running Docker container...$(NC)"
 	$(DOCKER) run -it --rm \
 		-v $(PWD):/app \
-		-p 3000:3000 \
+		-p 3003:3003 \
 		$(PROJECT_NAME):latest
 
 docker-compose-up: ## Start all services with docker-compose
@@ -157,9 +157,9 @@ docker-clean: ## Clean Docker resources
 # Publishing targets
 publish: ## Publish to GitHub Releases
 	@echo "$(GREEN)Publishing to GitHub...$(NC)"
-	$(PYTHON) tauri-builder.py \
+	$(PYTHON) tauridock.py \
 		--dockerfile ./Dockerfile \
-		--frontend-port 3000 \
+		--frontend-port 3003 \
 		--mode publish \
 		--github-repo $${GITHUB_REPO} \
 		--release-tag v$(VERSION) \
@@ -167,9 +167,9 @@ publish: ## Publish to GitHub Releases
 
 publish-test: ## Publish to GitHub as draft
 	@echo "$(GREEN)Publishing draft release...$(NC)"
-	$(PYTHON) tauri-builder.py \
+	$(PYTHON) tauridock.py \
 		--dockerfile ./Dockerfile \
-		--frontend-port 3000 \
+		--frontend-port 3003 \
 		--mode publish \
 		--github-repo $${GITHUB_REPO} \
 		--release-tag v$(VERSION)-test \
@@ -230,7 +230,7 @@ bump-version: ## Bump version (usage: make bump-version VERSION=1.2.3)
 	@echo "$(GREEN)Bumping version to $(VERSION)...$(NC)"
 	echo $(VERSION) > VERSION
 	sed -i 's/version=".*"/version="$(VERSION)"/' setup.py
-	sed -i 's/version: .*/version: $(VERSION)/' .tauri-builder.yml
+	sed -i 's/version: .*/version: $(VERSION)/' .tauridock.yml
 	@echo "$(GREEN)Version bumped to $(VERSION)$(NC)"
 
 stats: ## Show project statistics
@@ -257,9 +257,9 @@ ci-test: ## Run CI tests
 
 ci-build: ## Run CI build
 	@echo "$(GREEN)Running CI build...$(NC)"
-	$(PYTHON) tauri-builder.py \
+	$(PYTHON) tauridock.py \
 		--dockerfile ./Dockerfile \
-		--frontend-port 3000 \
+		--frontend-port 3003 \
 		--mode build \
 		--platforms linux \
 		--arch x64
@@ -271,12 +271,12 @@ benchmark: ## Run performance benchmarks
 
 profile: ## Profile the application
 	@echo "$(GREEN)Profiling application...$(NC)"
-	python -m cProfile -o profile.stats tauri-builder.py --help
+	python -m cProfile -o profile.stats tauridock.py --help
 	python -m pstats profile.stats
 
 validate-config: ## Validate configuration files
 	@echo "$(GREEN)Validating configuration...$(NC)"
-	yamllint .tauri-builder.yml
+	yamllint .tauridock.yml
 	yamllint docker-compose.yml
 	@echo "$(GREEN)Configuration valid!$(NC)"
 

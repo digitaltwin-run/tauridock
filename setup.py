@@ -21,18 +21,18 @@ if requirements_path.exists():
                        and ";" not in line]  # Skip platform-specific deps
 
 setup(
-    name="tauri-builder",
+    name="tauridock",
     version="1.0.0",
     author="Your Name",
     author_email="your.email@example.com",
     description="Multi-platform Tauri application builder using Docker",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/yourusername/tauri-builder",
+    url="https://github.com/yourusername/tauridock",
     project_urls={
-        "Bug Tracker": "https://github.com/yourusername/tauri-builder/issues",
-        "Documentation": "https://github.com/yourusername/tauri-builder/wiki",
-        "Source Code": "https://github.com/yourusername/tauri-builder",
+        "Bug Tracker": "https://github.com/yourusername/tauridock/issues",
+        "Documentation": "https://github.com/yourusername/tauridock/wiki",
+        "Source Code": "https://github.com/yourusername/tauridock",
     },
     packages=find_packages(exclude=["tests", "tests.*", "docs", "docs.*"]),
     classifiers=[
@@ -83,7 +83,7 @@ setup(
     },
     entry_points={
         "console_scripts": [
-            "tauri-builder=tauri_builder:main",
+            "tauridock=tauri_builder:main",
             "tb=tauri_builder:main",  # Short alias
         ],
     },
