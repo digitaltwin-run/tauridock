@@ -1,6 +1,6 @@
 # 🔌 API Reference
 
-[← Poprzedni: Przewodnik użytkowania](./02-USAGE-GUIDE.md) | [Spis treści](./INDEX.md) | [Następny: Konfiguracja →](./04-CONFIGURATION.md)
+[← Poprzedni: Przewodnik użytkowania](./USAGE.md) | [Spis treści](./INDEX.md) | [Następny: Konfiguracja →](./CONFIG.md)
 
 ---
 
@@ -731,7 +731,7 @@ emitter.emit("build.progress", {"percentage": 50})
 
 ## 📝 Następne Kroki
 
-- [Konfiguracja](./04-CONFIGURATION.md) - Szczegółowa konfiguracja
+- [Konfiguracja](./CONFIG.md) - Szczegółowa konfiguracja
 - [Developer Guide](./05-DEVELOPER-GUIDE.md) - Rozszerzanie funkcjonalności
 - [Examples](./11-EXAMPLES.md) - Przykłady użycia API
 
@@ -739,6 +739,6 @@ emitter.emit("build.progress", {"percentage": 50})
 
 <div align="center">
 
-[← Poprzedni: Przewodnik użytkowania](./02-USAGE-GUIDE.md) | [Spis treści](./INDEX.md) | [Następny: Konfiguracja →](./04-CONFIGURATION.md)
+[← Poprzedni: Przewodnik użytkowania](./USAGE.md) | [Spis treści](./INDEX.md) | [Następny: Konfiguracja →](./CONFIG.md)
 
 </div>

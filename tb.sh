@@ -31,7 +31,7 @@ fi
 # Functions
 print_header() {
     echo -e "${CYAN}╔════════════════════════════════════════╗${NC}"
-    echo -e "${CYAN}║       🦀 Tauri Builder CLI v$VERSION      ║${NC}"
+    echo -e "${CYAN}║       🦀 Tauri Builder CLI v$VERSION       ║${NC}"
     echo -e "${CYAN}╚════════════════════════════════════════╝${NC}"
     echo
 }

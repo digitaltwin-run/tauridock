@@ -28,11 +28,11 @@ setup(
     description="Multi-platform Tauri application builder using Docker",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/yourusername/tauridock",
+    url="https://github.com/digitaltwin-run/tauridock",
     project_urls={
-        "Bug Tracker": "https://github.com/yourusername/tauridock/issues",
-        "Documentation": "https://github.com/yourusername/tauridock/wiki",
-        "Source Code": "https://github.com/yourusername/tauridock",
+        "Bug Tracker": "https://github.com/digitaltwin-run/tauridock/issues",
+        "Documentation": "https://github.com/digitaltwin-run/tauridock/wiki",
+        "Source Code": "https://github.com/digitaltwin-run/tauridock",
     },
     packages=find_packages(exclude=["tests", "tests.*", "docs", "docs.*"]),
     classifiers=[

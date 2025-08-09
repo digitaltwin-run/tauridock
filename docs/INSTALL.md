@@ -1,6 +1,6 @@
 # 📦 Instalacja i Konfiguracja
 
-[← Powrót do spisu treści](./INDEX.md) | [Następny: Przewodnik użytkowania →](./02-USAGE-GUIDE.md)
+[← Powrót do spisu treści](./INDEX.md) | [Następny: Przewodnik użytkowania →](./USAGE.md)
 
 ---
 
@@ -44,10 +44,10 @@
 
 ```bash
 # Przez HTTPS
-git clone https://github.com/yourusername/tauri-builder.git
+git clone https://github.com/digitaltwin-run/tauri-builder.git
 
 # Przez SSH
-git clone git@github.com:yourusername/tauri-builder.git
+git clone git@github.com:digitaltwin-run/tauri-builder.git
 
 # Wejście do katalogu
 cd tauri-builder
@@ -216,16 +216,16 @@ tb --version
 
 ```bash
 # Pobranie obrazu z Docker Hub
-docker pull yourusername/tauri-builder:latest
+docker pull digitaltwin-run/tauri-builder:latest
 
 # Lub z GitHub Container Registry
-docker pull ghcr.io/yourusername/tauri-builder:latest
+docker pull ghcr.io/digitaltwin-run/tauri-builder:latest
 
 # Uruchomienie
 docker run -it --rm \
   -v $(pwd):/app \
   -p 3000:3000 \
-  yourusername/tauri-builder:latest
+  digitaltwin-run/tauri-builder:latest
 ```
 
 ### Opcja 2: Budowanie lokalnie
@@ -487,8 +487,8 @@ pyenv local 3.11.0
 
 Po pomyślnej instalacji:
 
-1. **[Przeczytaj przewodnik użytkowania](./02-USAGE-GUIDE.md)** - Naucz się podstawowych komend
-2. **[Skonfiguruj projekt](./04-CONFIGURATION.md)** - Dostosuj ustawienia
+1. **[Przeczytaj przewodnik użytkowania](./USAGE.md)** - Naucz się podstawowych komend
+2. **[Skonfiguruj projekt](./CONFIG.md)** - Dostosuj ustawienia
 3. **[Uruchom przykład](./11-EXAMPLES.md)** - Zobacz działający przykład
 4. **[Dołącz do społeczności](https://discord.gg/tauri-builder)** - Uzyskaj pomoc
 
@@ -505,6 +505,6 @@ Po pomyślnej instalacji:
 
 <div align="center">
 
-[← Powrót do spisu treści](./INDEX.md) | [Następny: Przewodnik użytkowania →](./02-USAGE-GUIDE.md)
+[← Powrót do spisu treści](./INDEX.md) | [Następny: Przewodnik użytkowania →](./USAGE.md)
 
 </div>

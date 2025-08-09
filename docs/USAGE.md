@@ -1,6 +1,6 @@
 # 📖 Przewodnik Użytkowania
 
-[← Poprzedni: Instalacja](./01-INSTALLATION.md) | [Spis treści](./INDEX.md) | [Następny: API Reference →](./03-API-REFERENCE.md)
+[← Poprzedni: Instalacja](./INSTALL.md) | [Spis treści](./INDEX.md) | [Następny: API Reference →](./API.md)
 
 ---
 
@@ -621,8 +621,8 @@ tb build --log-file build.log --log-rotate --log-max-size 10M
 
 ## 📝 Następne Kroki
 
-- [API Reference](./03-API-REFERENCE.md) - Pełna dokumentacja API
-- [Configuration](./04-CONFIGURATION.md) - Zaawansowana konfiguracja
+- [API Reference](./API.md) - Pełna dokumentacja API
+- [Configuration](./CONFIG.md) - Zaawansowana konfiguracja
 - [CI/CD](./07-CI-CD.md) - Automatyzacja
 - [Examples](./11-EXAMPLES.md) - Więcej przykładów
 
@@ -630,6 +630,6 @@ tb build --log-file build.log --log-rotate --log-max-size 10M
 
 <div align="center">
 
-[← Poprzedni: Instalacja](./01-INSTALLATION.md) | [Spis treści](./INDEX.md) | [Następny: API Reference →](./03-API-REFERENCE.md)
+[← Poprzedni: Instalacja](./INSTALL.md) | [Spis treści](./INDEX.md) | [Następny: API Reference →](./API.md)
 
 </div>

@@ -9,8 +9,9 @@ ARG ARCH=x64
 # Base stage with common dependencies
 FROM rust:${RUST_VERSION} AS base
 
-# Install Node.js
-RUN curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash - && \
+# Install Node.js using package manager (simpler approach)
+RUN apt-get update && apt-get install -y curl && \
+    curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - && \
     apt-get install -y nodejs
 
 # Install pnpm and yarn globally

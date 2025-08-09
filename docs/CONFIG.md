@@ -1,6 +1,6 @@
 # ⚙️ Konfiguracja
 
-[← Poprzedni: API Reference](./03-API-REFERENCE.md) | [Spis treści](./INDEX.md) | [Następny: Developer Guide →](./05-DEVELOPER-GUIDE.md)
+[← Poprzedni: API Reference](./API.md) | [Spis treści](./INDEX.md) | [Następny: Developer Guide →](./05-DEVELOPER-GUIDE.md)
 
 ---
 
@@ -819,6 +819,6 @@ platforms:
 
 <div align="center">
 
-[← Poprzedni: API Reference](./03-API-REFERENCE.md) | [Spis treści](./INDEX.md) | [Następny: Developer Guide →](./05-DEVELOPER-GUIDE.md)
+[← Poprzedni: API Reference](./API.md) | [Spis treści](./INDEX.md) | [Następny: Developer Guide →](./05-DEVELOPER-GUIDE.md)
 
 </div>

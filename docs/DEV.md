@@ -1,6 +1,6 @@
 # 👨‍💻 Developer Guide
 
-[← Poprzedni: Konfiguracja](./04-CONFIGURATION.md) | [Spis treści](./INDEX.md) | [Następny: Architektura →](./06-ARCHITECTURE.md)
+[← Poprzedni: Konfiguracja](./CONFIG.md) | [Spis treści](./INDEX.md) | [Następny: Architektura →](./06-ARCHITECTURE.md)
 
 ---
 
@@ -106,7 +106,7 @@ class TauriBuilder:
 
 ```bash
 # Clone repo
-git clone https://github.com/yourusername/tauri-builder.git
+git clone https://github.com/digitaltwin-run/tauri-builder.git
 cd tauri-builder
 
 # Create virtual environment
@@ -716,6 +716,6 @@ line_length = 88
 
 <div align="center">
 
-[← Poprzedni: Konfiguracja](./04-CONFIGURATION.md) | [Spis treści](./INDEX.md) | [Następny: Architektura →](./06-ARCHITECTURE.md)
+[← Poprzedni: Konfiguracja](./CONFIG.md) | [Spis treści](./INDEX.md) | [Następny: Architektura →](./06-ARCHITECTURE.md)
 
 </div>

@@ -11,7 +11,7 @@
 
 **Zaawansowane narzędzie CLI do budowania aplikacji Tauri dla wszystkich platform**
 
-[Szybki Start](./01-INSTALLATION.md) | [Przewodnik](./02-USAGE-GUIDE.md) | [API](./03-API-REFERENCE.md) | [FAQ](./10-FAQ.md)
+[Szybki Start](./INSTALL.md) | [Przewodnik](./USAGE.md) | [API](./API.md) | [FAQ](./10-FAQ.md)
 
 </div>
 
@@ -21,19 +21,19 @@
 
 ### 🚀 Rozpoczęcie Pracy
 
-1. **[Instalacja](./01-INSTALLATION.md)**
+1. **[Instalacja](./INSTALL.md)**
    - Wymagania systemowe
    - Instalacja krok po kroku
    - Weryfikacja instalacji
    - Szybka konfiguracja
 
-2. **[Przewodnik Użytkowania](./02-USAGE-GUIDE.md)**
+2. **[Przewodnik Użytkowania](./USAGE.md)**
    - Podstawowe komendy
    - Tryby pracy
    - Przykłady użycia
    - Best practices
 
-3. **[Dokumentacja API](./03-API-REFERENCE.md)**
+3. **[Dokumentacja API](./API.md)**
    - Parametry CLI
    - Python API
    - REST API
@@ -41,7 +41,7 @@
 
 ### 🔧 Konfiguracja i Rozwój
 
-4. **[Konfiguracja](./04-CONFIGURATION.md)**
+4. **[Konfiguracja](./CONFIG.md)**
    - Plik konfiguracyjny YAML
    - Zmienne środowiskowe
    - Dockerfile customization
@@ -106,14 +106,14 @@
 
 | Funkcja | Opis | Dokumentacja |
 |---------|------|--------------|
-| 🚀 **Multi-platform** | Buduj dla Windows, macOS, Linux | [Platformy](./02-USAGE-GUIDE.md#platformy) |
+| 🚀 **Multi-platform** | Buduj dla Windows, macOS, Linux | [Platformy](./USAGE.md#platformy) |
 | 🐳 **Docker Integration** | Izolowane środowisko budowania | [Docker](./08-DOCKER.md) |
-| 📦 **Auto-packaging** | MSI, DMG, DEB, AppImage | [Pakowanie](./04-CONFIGURATION.md#bundle-types) |
-| 🔄 **Hot Reload** | Development z live reload | [Dev Mode](./02-USAGE-GUIDE.md#tryb-developerski) |
+| 📦 **Auto-packaging** | MSI, DMG, DEB, AppImage | [Pakowanie](./CONFIG.md#bundle-types) |
+| 🔄 **Hot Reload** | Development z live reload | [Dev Mode](./USAGE.md#tryb-developerski) |
 | 📤 **GitHub Releases** | Automatyczna publikacja | [Publishing](./07-CI-CD.md#github-releases) |
 | 🔧 **CI/CD Ready** | Pełna integracja | [CI/CD](./07-CI-CD.md) |
 | 🎯 **Cross-compilation** | ARM64 i x64 | [Architektury](./06-ARCHITECTURE.md#cross-compilation) |
-| 📝 **YAML Config** | Elastyczna konfiguracja | [Config](./04-CONFIGURATION.md) |
+| 📝 **YAML Config** | Elastyczna konfiguracja | [Config](./CONFIG.md) |
 
 ---
 
@@ -158,11 +158,11 @@ builder.run()
 
 ```mermaid
 graph TD
-    A[INDEX] --> B[01-INSTALLATION]
-    B --> C[02-USAGE-GUIDE]
-    C --> D[03-API-REFERENCE]
+    A[INDEX] --> B[INSTALL]
+    B --> C[USAGE]
+    C --> D[API]
     
-    A --> E[04-CONFIGURATION]
+    A --> E[CONFIG]
     E --> F[05-DEVELOPER-GUIDE]
     F --> G[06-ARCHITECTURE]
     
@@ -195,8 +195,8 @@ graph TD
 
 - 📧 **Email**: support@tauri-builder.com
 - 💬 **Discord**: [Join our server](https://discord.gg/tauri-builder)
-- 🐛 **Issues**: [GitHub Issues](https://github.com/yourusername/tauri-builder/issues)
-- 📖 **Wiki**: [GitHub Wiki](https://github.com/yourusername/tauri-builder/wiki)
+- 🐛 **Issues**: [GitHub Issues](https://github.com/digitaltwin-run/tauri-builder/issues)
+- 📖 **Wiki**: [GitHub Wiki](https://github.com/digitaltwin-run/tauri-builder/wiki)
 
 ---
 
