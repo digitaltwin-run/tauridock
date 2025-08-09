@@ -121,7 +121,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          python tauri-builder.py \
+          python tauridock.py \
             --dockerfile ./Dockerfile \
             --frontend-port 3000 \
             --mode build \
@@ -289,7 +289,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          python tauri-builder.py \
+          python tauridock.py \
             --dockerfile ./Dockerfile \
             --frontend-port 3000 \
             --mode publish \
@@ -342,8 +342,8 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: |
-            ${{ secrets.DOCKER_USERNAME }}/tauri-builder
-            ghcr.io/${{ github.repository_owner }}/tauri-builder
+            ${{ secrets.DOCKER_USERNAME }}/tauridock
+            ghcr.io/${{ github.repository_owner }}/tauridock
           tags: |
             type=ref,event=branch
             type=ref,event=pr

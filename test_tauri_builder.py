@@ -117,12 +117,12 @@ class TestDockerManager(unittest.TestCase):
         manager = DockerManager(self.config)
         tag = manager.build_image("linux", "x64")
 
-        self.assertEqual(tag, "tauri-builder-linux-x64:latest")
+        self.assertEqual(tag, "tauridock-linux-x64:latest")
         mock_client.images.build.assert_called_once()
 
         # Check build arguments
         call_args = mock_client.images.build.call_args
-        self.assertEqual(call_args[1]['tag'], "tauri-builder-linux-x64:latest")
+        self.assertEqual(call_args[1]['tag'], "tauridock-linux-x64:latest")
         self.assertEqual(call_args[1]['buildargs']['PLATFORM'], "linux")
         self.assertEqual(call_args[1]['buildargs']['ARCH'], "x64")
 

@@ -1,5 +1,5 @@
 # Tauri Builder Configuration File
-# Place this file in your project root as .tauri-builder.yml
+# Place this file in your project root as .tauridock.yml
 
 # Docker configuration
 docker:
@@ -286,7 +286,7 @@ advanced:
     level: info
 
     # Log file
-    file: "./tauri-builder.log"
+    file: "./tauridock.log"
 
     # Rotate logs
     rotate: true

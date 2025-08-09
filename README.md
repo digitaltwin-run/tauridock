@@ -2,8 +2,8 @@
 Python CLI Script dla Tauri Multi-Platform Builder
 # 🦀 Tauri Builder CLI
 
-[![Build Status](https://github.com/digitaltwin-run/tauri-builder/workflows/Tauri%20Build%20and%20Release/badge.svg)](https://github.com/digitaltwin-run/tauri-builder/actions)
-[![Docker Pulls](https://img.shields.io/docker/pulls/digitaltwin-run/tauri-builder)](https://hub.docker.com/r/digitaltwin-run/tauri-builder)
+[![Build Status](https://github.com/digitaltwin-run/tauridock/workflows/Tauri%20Build%20and%20Release/badge.svg)](https://github.com/digitaltwin-run/tauridock/actions)
+[![Docker Pulls](https://img.shields.io/docker/pulls/digitaltwin-run/tauridock)](https://hub.docker.com/r/digitaltwin-run/tauridock)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Python Version](https://img.shields.io/badge/python-3.8%2B-blue)](https://www.python.org/downloads/)
 
@@ -36,8 +36,8 @@ Zaawansowane narzędzie CLI do budowania aplikacji Tauri dla wszystkich platform
 
 ```bash
 # Klonuj repozytorium
-git clone https://github.com/digitaltwin-run/tauri-builder.git
-cd tauri-builder
+git clone https://github.com/digitaltwin-run/tauridock.git
+cd tauridock
 
 # Zainstaluj zależności
 pip install -r requirements.txt
@@ -50,13 +50,13 @@ pip install -e .
 
 ```bash
 # Tryb developerski
-python tauri-builder.py --dockerfile ./Dockerfile --frontend-port 3000 --mode dev
+python tauridock.py --dockerfile ./Dockerfile --frontend-port 3000 --mode dev
 
 # Budowanie dla wszystkich platform
-python tauri-builder.py --dockerfile ./Dockerfile --frontend-port 3000 --mode build
+python tauridock.py --dockerfile ./Dockerfile --frontend-port 3000 --mode build
 
 # Publikacja na GitHub
-python tauri-builder.py --dockerfile ./Dockerfile --frontend-port 3000 --mode publish \
+python tauridock.py --dockerfile ./Dockerfile --frontend-port 3000 --mode publish \
   --github-token $GITHUB_TOKEN --github-repo owner/repo
 ```
 
@@ -85,15 +85,15 @@ python tauri-builder.py --dockerfile ./Dockerfile --frontend-port 3000 --mode pu
 
 ```bash
 # Buduj tylko dla Windows x64
-python tauri-builder.py --dockerfile ./Dockerfile --mode build \
+python tauridock.py --dockerfile ./Dockerfile --mode build \
   --platforms windows --arch x64
 
 # Buduj dla Linux ARM64
-python tauri-builder.py --dockerfile ./Dockerfile --mode build \
+python tauridock.py --dockerfile ./Dockerfile --mode build \
   --platforms linux --arch arm64
 
 # Buduj dla wielu platform
-python tauri-builder.py --dockerfile ./Dockerfile --mode build \
+python tauridock.py --dockerfile ./Dockerfile --mode build \
   --platforms windows,macos,linux --arch x64,arm64
 ```
 
@@ -101,11 +101,11 @@ python tauri-builder.py --dockerfile ./Dockerfile --mode build \
 
 ```bash
 # Development z hot-reload i devtools
-python tauri-builder.py --dockerfile ./Dockerfile --mode dev \
+python tauridock.py --dockerfile ./Dockerfile --mode dev \
   --hot-reload --devtools --debug
 
 # Z plikiem środowiskowym
-python tauri-builder.py --dockerfile ./Dockerfile --mode dev \
+python tauridock.py --dockerfile ./Dockerfile --mode dev \
   --env-file .env.local --watch
 ```
 
@@ -113,11 +113,11 @@ python tauri-builder.py --dockerfile ./Dockerfile --mode dev \
 
 ```bash
 # Budowanie z optymalizacjami i podpisywaniem
-python tauri-builder.py --dockerfile ./Dockerfile --mode build \
+python tauridock.py --dockerfile ./Dockerfile --mode build \
   --optimize --sign --bundle-types '{"windows": ["msi", "nsis"]}'
 
 # Własna nazwa i wersja
-python tauri-builder.py --dockerfile ./Dockerfile --mode build \
+python tauridock.py --dockerfile ./Dockerfile --mode build \
   --app-name "MyApp" --version "2.0.0" --output-dir ./releases
 ```
 
@@ -125,7 +125,7 @@ python tauri-builder.py --dockerfile ./Dockerfile --mode build \
 
 ```bash
 # Pełna publikacja z release notes
-python tauri-builder.py --dockerfile ./Dockerfile --mode publish \
+python tauridock.py --dockerfile ./Dockerfile --mode publish \
   --github-token $GITHUB_TOKEN \
   --github-repo owner/repo \
   --release-tag v1.0.0 \
@@ -136,7 +136,7 @@ python tauri-builder.py --dockerfile ./Dockerfile --mode publish \
 
 ### Konfiguracja przez plik YAML
 
-Utwórz plik `.tauri-builder.yml` w katalogu projektu:
+Utwórz plik `.tauridock.yml` w katalogu projektu:
 
 ```yaml
 dockerfile: ./Dockerfile
@@ -171,7 +171,7 @@ publish:
 Następnie uruchom:
 
 ```bash
-python tauri-builder.py --config .tauri-builder.yml
+python tauridock.py --config .tauridock.yml
 ```
 
 ### Struktura Dockerfile
@@ -206,20 +206,20 @@ FROM base AS macos-builder
 
 ```bash
 # Buduj obraz lokalnie
-docker build -t tauri-builder .
+docker build -t tauridock .
 
 # Buduj dla wielu platform
-docker buildx build --platform linux/amd64,linux/arm64 -t tauri-builder .
+docker buildx build --platform linux/amd64,linux/arm64 -t tauridock .
 ```
 
 ### Używanie gotowego obrazu
 
 ```bash
 # Pobierz obraz z Docker Hub
-docker pull digitaltwin-run/tauri-builder:latest
+docker pull digitaltwin-run/tauridock:latest
 
 # Lub z GitHub Container Registry
-docker pull ghcr.io/digitaltwin-run/tauri-builder:latest
+docker pull ghcr.io/digitaltwin-run/tauridock:latest
 ```
 
 ### Uruchomienie w kontenerze
@@ -230,7 +230,7 @@ docker run -it --rm \
   -v $(pwd):/app \
   -p 3000:3000 \
   -e MODE=dev \
-  tauri-builder
+  tauridock
 
 # Budowanie
 docker run -it --rm \
@@ -239,7 +239,7 @@ docker run -it --rm \
   -e MODE=build \
   -e PLATFORM=linux \
   -e ARCH=x64 \
-  tauri-builder
+  tauridock
 ```
 
 ## 🔄 CI/CD
@@ -264,7 +264,7 @@ jobs:
       
       - name: Build with Tauri Builder
         run: |
-          python tauri-builder.py \
+          python tauridock.py \
             --dockerfile ./Dockerfile \
             --mode build \
             --platforms windows,macos,linux
@@ -287,7 +287,7 @@ build:
     - docker:dind
   script:
     - pip install -r requirements.txt
-    - python tauri-builder.py --dockerfile ./Dockerfile --mode build
+    - python tauridock.py --dockerfile ./Dockerfile --mode build
   artifacts:
     paths:
       - dist/
@@ -305,7 +305,7 @@ pipeline {
         stage('Build') {
             steps {
                 sh 'pip install -r requirements.txt'
-                sh 'python tauri-builder.py --dockerfile ./Dockerfile --mode build'
+                sh 'python tauridock.py --dockerfile ./Dockerfile --mode build'
             }
         }
         
@@ -314,7 +314,7 @@ pipeline {
                 tag pattern: "v\\d+\\.\\d+\\.\\d+", comparator: "REGEXP"
             }
             steps {
-                sh 'python tauri-builder.py --dockerfile ./Dockerfile --mode publish'
+                sh 'python tauridock.py --dockerfile ./Dockerfile --mode publish'
             }
         }
     }
@@ -353,15 +353,15 @@ tests/
 
 ```bash
 # Debug mode - wszystkie logi
-python tauri-builder.py --dockerfile ./Dockerfile --mode build --debug
+python tauridock.py --dockerfile ./Dockerfile --mode build --debug
 
 # Tylko błędy
-LOG_LEVEL=ERROR python tauri-builder.py --dockerfile ./Dockerfile --mode build
+LOG_LEVEL=ERROR python tauridock.py --dockerfile ./Dockerfile --mode build
 ```
 
 ### Lokalizacja logów
 
-- Domyślnie: `./tauri-builder.log`
+- Domyślnie: `./tauridock.log`
 - Docker logs: `docker logs <container_id>`
 - CI/CD: Artefakty w systemie CI
 
@@ -390,7 +390,7 @@ open -a Docker
 # Docker Desktop: Settings -> Resources -> Memory
 
 # Lub buduj sekwencyjnie
-python tauri-builder.py --dockerfile ./Dockerfile --mode build \
+python tauridock.py --dockerfile ./Dockerfile --mode build \
   --platforms windows --arch x64
 ```
 
@@ -414,7 +414,7 @@ rustup target add aarch64-unknown-linux-gnu
 
 ### Zgłaszanie błędów
 
-Używaj [GitHub Issues](https://github.com/digitaltwin-run/tauri-builder/issues) z następującymi informacjami:
+Używaj [GitHub Issues](https://github.com/digitaltwin-run/tauridock/issues) z następującymi informacjami:
 
 - Wersja Python i Docker
 - System operacyjny
@@ -460,7 +460,7 @@ Skrypt command-line w Pythonie, który automatyzuje proces budowania aplikacji T
 
 
 ### 1. Nazwa skryptu
-`tauri-builder.py`
+`tauridock.py`
 
 ### 2. Zależności
 - Python 3.8+
@@ -558,20 +558,20 @@ Skrypt command-line w Pythonie, który automatyzuje proces budowania aplikacji T
 
 ```bash
 # Development mode
-python tauri-builder.py --dockerfile ./Dockerfile --frontend-port 3000 --mode dev --hot-reload
+python tauridock.py --dockerfile ./Dockerfile --frontend-port 3000 --mode dev --hot-reload
 
 # Build dla wszystkich platform
-python tauri-builder.py --dockerfile ./Dockerfile --frontend-port 3000 --mode build --platforms windows,macos,linux --optimize
+python tauridock.py --dockerfile ./Dockerfile --frontend-port 3000 --mode build --platforms windows,macos,linux --optimize
 
 # Build tylko dla Windows x64
-python tauri-builder.py --dockerfile ./Dockerfile --frontend-port 3000 --mode build --platforms windows --arch x64
+python tauridock.py --dockerfile ./Dockerfile --frontend-port 3000 --mode build --platforms windows --arch x64
 
 # Publikacja na GitHub
-python tauri-builder.py --dockerfile ./Dockerfile --frontend-port 3000 --mode publish \
+python tauridock.py --dockerfile ./Dockerfile --frontend-port 3000 --mode publish \
   --github-token $GITHUB_TOKEN --github-repo myuser/myapp --release-tag v1.0.0
 
 # Development z custom config
-python tauri-builder.py --dockerfile ./Dockerfile --frontend-port 8080 --mode dev \
+python tauridock.py --dockerfile ./Dockerfile --frontend-port 8080 --mode dev \
   --config ./custom-tauri.conf.json --env-file .env.local --debug
 ```
 
@@ -618,7 +618,7 @@ dist/
 
 ## Konfiguracja przez plik
 
-Obsługa pliku konfiguracyjnego `.tauri-builder.yml`:
+Obsługa pliku konfiguracyjnego `.tauridock.yml`:
 ```yaml
 dockerfile: ./Dockerfile
 frontend_port: 3000

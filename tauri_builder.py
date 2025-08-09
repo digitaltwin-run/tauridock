@@ -34,7 +34,7 @@ logging.basicConfig(
     format="%(message)s",
     handlers=[RichHandler(console=console, rich_tracebacks=True)]
 )
-logger = logging.getLogger("tauri-builder")
+logger = logging.getLogger("tauridock")
 
 
 @dataclass
@@ -75,7 +75,7 @@ class DockerManager:
 
     def build_image(self, platform: str, arch: str) -> str:
         """Build Docker image for specific platform"""
-        tag = f"tauri-builder-{platform}-{arch}:latest"
+        tag = f"tauridock-{platform}-{arch}:latest"
 
         build_args = {
             'PLATFORM': platform,
@@ -406,7 +406,7 @@ class ConfigManager:
     """Manages Tauri and build configuration"""
 
     @staticmethod
-    def load_config_file(config_path: Path = Path('.tauri-builder.yml')) -> Dict:
+    def load_config_file(config_path: Path = Path('.tauridock.yml')) -> Dict:
         """Load configuration from YAML file"""
         if config_path.exists():
             with open(config_path) as f:
