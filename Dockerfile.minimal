@@ -1,0 +1,29 @@
+# Minimal Dockerfile for fast Linux builds only
+FROM rust:1.75-slim
+
+# Install only essential dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    wget \
+    pkg-config \
+    libssl-dev \
+    libwebkit2gtk-4.0-dev \
+    libgtk-3-dev \
+    libayatana-appindicator3-dev \
+    librsvg2-dev \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Node.js (simplified)
+RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - && \
+    apt-get install -y nodejs && \
+    npm install -g yarn
+
+# Install Tauri CLI
+RUN cargo install tauri-cli
+
+WORKDIR /app
+COPY . .
+
+# Build command
+CMD ["cargo", "tauri", "build"]
