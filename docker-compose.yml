@@ -1,0 +1,265 @@
+version: '3.8'
+
+services:
+  # Main Tauri builder service
+  tauri-builder:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        RUST_VERSION: 1.75
+        NODE_VERSION: 20
+        PLATFORM: linux
+        ARCH: x64
+    image: tauri-builder:latest
+    container_name: tauri-builder-main
+    volumes:
+      # Mount project directory
+      - .:/app
+      # Mount output directory
+      - ./dist:/dist
+      # Cache directories for faster builds
+      - cargo-cache:/root/.cargo
+      - npm-cache:/root/.npm
+      - target-cache:/app/target
+      # Docker socket for nested Docker operations
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      # Frontend port
+      - "3000:3000"
+      # Tauri dev server
+      - "1420:1420"
+      # HMR websocket
+      - "1421:1421"
+    environment:
+      - MODE=${MODE:-build}
+      - PLATFORM=${PLATFORM:-linux}
+      - ARCH=${ARCH:-x64}
+      - FRONTEND_PORT=${FRONTEND_PORT:-3000}
+      - RUST_BACKTRACE=1
+      - NODE_ENV=${NODE_ENV:-production}
+      - DOCKER_BUILDKIT=1
+    networks:
+      - tauri-network
+    restart: unless-stopped
+    command: ${COMMAND:-build}
+
+  # Windows cross-compilation service
+  windows-builder:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: windows-builder
+    image: tauri-builder:windows
+    container_name: tauri-builder-windows
+    profiles:
+      - windows
+    volumes:
+      - .:/app
+      - ./dist/windows:/dist
+      - cargo-cache-win:/root/.cargo
+      - target-cache-win:/app/target
+    environment:
+      - PLATFORM=windows
+      - ARCH=${ARCH:-x64}
+      - CARGO_TARGET_X86_64_PC_WINDOWS_GNU_LINKER=x86_64-w64-mingw32-gcc
+    networks:
+      - tauri-network
+
+  # macOS cross-compilation service (experimental)
+  macos-builder:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: macos-builder
+    image: tauri-builder:macos
+    container_name: tauri-builder-macos
+    profiles:
+      - macos
+    volumes:
+      - .:/app
+      - ./dist/macos:/dist
+      - cargo-cache-mac:/root/.cargo
+      - target-cache-mac:/app/target
+    environment:
+      - PLATFORM=macos
+      - ARCH=${ARCH:-x64}
+      - OSXCROSS_ROOT=/opt/osxcross
+    networks:
+      - tauri-network
+
+  # ARM64 cross-compilation service
+  arm64-builder:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: arm64-builder
+    image: tauri-builder:arm64
+    container_name: tauri-builder-arm64
+    profiles:
+      - arm64
+    volumes:
+      - .:/app
+      - ./dist/arm64:/dist
+      - cargo-cache-arm:/root/.cargo
+      - target-cache-arm:/app/target
+    environment:
+      - PLATFORM=${PLATFORM:-linux}
+      - ARCH=arm64
+      - CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER=aarch64-linux-gnu-gcc
+    networks:
+      - tauri-network
+
+  # Development database (if needed for app)
+  postgres:
+    image: postgres:16-alpine
+    container_name: tauri-dev-db
+    profiles:
+      - dev
+    environment:
+      - POSTGRES_USER=tauri
+      - POSTGRES_PASSWORD=tauri_dev
+      - POSTGRES_DB=tauri_app
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - tauri-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tauri"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis cache (for build caching)
+  redis:
+    image: redis:7-alpine
+    container_name: tauri-cache
+    profiles:
+      - cache
+    volumes:
+      - redis-data:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - tauri-network
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # MinIO for artifact storage
+  minio:
+    image: minio/minio:latest
+    container_name: tauri-artifacts
+    profiles:
+      - storage
+    environment:
+      - MINIO_ROOT_USER=minioadmin
+      - MINIO_ROOT_PASSWORD=minioadmin
+    volumes:
+      - minio-data:/data
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    networks:
+      - tauri-network
+    command: server /data --console-address ":9001"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+
+  # Nginx for serving built applications
+  nginx:
+    image: nginx:alpine
+    container_name: tauri-serve
+    profiles:
+      - serve
+    volumes:
+      - ./dist:/usr/share/nginx/html:ro
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "8080:80"
+    networks:
+      - tauri-network
+    depends_on:
+      - tauri-builder
+
+  # Monitoring with Prometheus
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: tauri-prometheus
+    profiles:
+      - monitoring
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    ports:
+      - "9090:9090"
+    networks:
+      - tauri-network
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+
+  # Grafana for metrics visualization
+  grafana:
+    image: grafana/grafana:latest
+    container_name: tauri-grafana
+    profiles:
+      - monitoring
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_INSTALL_PLUGINS=redis-datasource
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
+      - ./monitoring/grafana/datasources:/etc/grafana/provisioning/datasources:ro
+    ports:
+      - "3001:3000"
+    networks:
+      - tauri-network
+    depends_on:
+      - prometheus
+
+networks:
+  tauri-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.28.0.0/16
+
+volumes:
+  cargo-cache:
+    driver: local
+  cargo-cache-win:
+    driver: local
+  cargo-cache-mac:
+    driver: local
+  cargo-cache-arm:
+    driver: local
+  npm-cache:
+    driver: local
+  target-cache:
+    driver: local
+  target-cache-win:
+    driver: local
+  target-cache-mac:
+    driver: local
+  target-cache-arm:
+    driver: local
+  postgres-data:
+    driver: local
+  redis-data:
+    driver: local
+  minio-data:
+    driver: local
+  prometheus-data:
+    driver: local
+  grafana-data:
+    driver: local
