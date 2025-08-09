@@ -50,13 +50,13 @@ pip install -e .
 
 ```bash
 # Tryb developerski
-python tauridock.py --dockerfile ./Dockerfile --frontend-port 3000 --mode dev
+python tauridock.py --dockerfile ./Dockerfile --frontend-port 3003 --mode dev
 
 # Budowanie dla wszystkich platform
-python tauridock.py --dockerfile ./Dockerfile --frontend-port 3000 --mode build
+python tauridock.py --dockerfile ./Dockerfile --frontend-port 3003 --mode build
 
 # Publikacja na GitHub
-python tauridock.py --dockerfile ./Dockerfile --frontend-port 3000 --mode publish \
+python tauridock.py --dockerfile ./Dockerfile --frontend-port 3003 --mode publish \
   --github-token $GITHUB_TOKEN --github-repo owner/repo
 ```
 
@@ -69,7 +69,7 @@ python tauridock.py --dockerfile ./Dockerfile --frontend-port 3000 --mode publis
 | Parametr | Opis | Przykład |
 |----------|------|----------|
 | `--dockerfile` | Ścieżka do Dockerfile | `./Dockerfile` |
-| `--frontend-port` | Port frontendu | `3000` |
+| `--frontend-port` | Port frontendu | `3003` |
 
 #### Tryby pracy
 
@@ -140,7 +140,7 @@ Utwórz plik `.tauridock.yml` w katalogu projektu:
 
 ```yaml
 dockerfile: ./Dockerfile
-frontend_port: 3000
+frontend_port: 3003
 mode: build
 
 platforms:
@@ -228,7 +228,7 @@ docker pull ghcr.io/digitaltwin-run/tauridock:latest
 # Tryb developerski
 docker run -it --rm \
   -v $(pwd):/app \
-  -p 3000:3000 \
+  -p 3003:3003 \
   -e MODE=dev \
   tauridock
 
@@ -472,7 +472,7 @@ Skrypt command-line w Pythonie, który automatyzuje proces budowania aplikacji T
 
 #### Wymagane parametry:
 - `--dockerfile PATH` - ścieżka do Dockerfile używanego do budowania
-- `--frontend-port PORT` - port na którym serwowany jest frontend (domyślnie: 3000)
+- `--frontend-port PORT` - port na którym serwowany jest frontend (domyślnie: 3003)
 
 #### Parametry opcjonalne:
 
@@ -558,16 +558,16 @@ Skrypt command-line w Pythonie, który automatyzuje proces budowania aplikacji T
 
 ```bash
 # Development mode
-python tauridock.py --dockerfile ./Dockerfile --frontend-port 3000 --mode dev --hot-reload
+python tauridock.py --dockerfile ./Dockerfile --frontend-port 3003 --mode dev --hot-reload
 
 # Build dla wszystkich platform
-python tauridock.py --dockerfile ./Dockerfile --frontend-port 3000 --mode build --platforms windows,macos,linux --optimize
+python tauridock.py --dockerfile ./Dockerfile --frontend-port 3003 --mode build --platforms windows,macos,linux --optimize
 
 # Build tylko dla Windows x64
-python tauridock.py --dockerfile ./Dockerfile --frontend-port 3000 --mode build --platforms windows --arch x64
+python tauridock.py --dockerfile ./Dockerfile --frontend-port 3003 --mode build --platforms windows --arch x64
 
 # Publikacja na GitHub
-python tauridock.py --dockerfile ./Dockerfile --frontend-port 3000 --mode publish \
+python tauridock.py --dockerfile ./Dockerfile --frontend-port 3003 --mode publish \
   --github-token $GITHUB_TOKEN --github-repo myuser/myapp --release-tag v1.0.0
 
 # Development z custom config
@@ -621,7 +621,7 @@ dist/
 Obsługa pliku konfiguracyjnego `.tauridock.yml`:
 ```yaml
 dockerfile: ./Dockerfile
-frontend_port: 3000
+frontend_port: 3003
 platforms:
   - windows
   - macos

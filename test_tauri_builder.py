@@ -40,7 +40,7 @@ class TestBuildConfig(unittest.TestCase):
         """Test creating BuildConfig with all parameters"""
         config = BuildConfig(
             dockerfile=Path("Dockerfile"),
-            frontend_port=3000,
+            frontend_port=3003,
             mode="build",
             platforms=["windows", "linux"],
             architectures=["x64"],
@@ -55,7 +55,7 @@ class TestBuildConfig(unittest.TestCase):
         )
 
         self.assertEqual(config.dockerfile, Path("Dockerfile"))
-        self.assertEqual(config.frontend_port, 3000)
+        self.assertEqual(config.frontend_port, 3003)
         self.assertEqual(config.mode, "build")
         self.assertEqual(config.platforms, ["windows", "linux"])
         self.assertEqual(config.architectures, ["x64"])
@@ -71,7 +71,7 @@ class TestDockerManager(unittest.TestCase):
     def setUp(self):
         self.config = BuildConfig(
             dockerfile=Path("Dockerfile"),
-            frontend_port=3000,
+            frontend_port=3003,
             mode="build",
             platforms=["linux"],
             architectures=["x64"],
@@ -155,7 +155,7 @@ class TestPlatformBuilder(unittest.TestCase):
     def setUp(self):
         self.config = BuildConfig(
             dockerfile=Path("Dockerfile"),
-            frontend_port=3000,
+            frontend_port=3003,
             mode="build",
             platforms=["windows", "linux"],
             architectures=["x64"],
@@ -224,7 +224,7 @@ class TestGitHubPublisher(unittest.TestCase):
     def setUp(self):
         self.config = BuildConfig(
             dockerfile=Path("Dockerfile"),
-            frontend_port=3000,
+            frontend_port=3003,
             mode="publish",
             platforms=["windows"],
             architectures=["x64"],
@@ -261,7 +261,7 @@ class TestGitHubPublisher(unittest.TestCase):
         """Test GitHubPublisher without token"""
         config = BuildConfig(
             dockerfile=Path("Dockerfile"),
-            frontend_port=3000,
+            frontend_port=3003,
             mode="publish",
             platforms=["windows"],
             architectures=["x64"],
@@ -356,7 +356,7 @@ class TestTauriBuilder(unittest.TestCase):
     def setUp(self):
         self.config = BuildConfig(
             dockerfile=Path("Dockerfile"),
-            frontend_port=3000,
+            frontend_port=3003,
             mode="build",
             platforms=["linux"],
             architectures=["x64"],
@@ -428,7 +428,7 @@ class TestIntegration(unittest.TestCase):
         try:
             result = runner.invoke(main, [
                 '--dockerfile', dockerfile_path,
-                '--frontend-port', '3000',
+                '--frontend-port', '3003',
                 '--mode', 'build'
             ])
 
@@ -442,7 +442,7 @@ class TestIntegration(unittest.TestCase):
         """Test full build command generation"""
         config = BuildConfig(
             dockerfile=Path("Dockerfile"),
-            frontend_port=3000,
+            frontend_port=3003,
             mode="build",
             platforms=["windows"],
             architectures=["x64"],

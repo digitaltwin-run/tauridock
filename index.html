@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8" />
+<title>Upoważnienie do odbioru leków</title>
+<style>
+  body { font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; }
+  label { display: block; margin-top: 15px; }
+  input[type="text"], input[type="date"], input[type="checkbox"] { margin-top: 5px; width: 100%; padding: 5px; }
+  .signature-pad {
+    border: 1px solid #ccc;
+    margin-top: 10px;
+    width: 100%;
+    height: 150px;
+  }
+  button { margin-top: 15px; padding: 10px 20px; }
+</style>
+</head>
+<body>
+
+<h2>Upoważnienie do odbioru leków</h2>
+<form id="authorizationForm">
+
+  <label>
+    Imię i nazwisko osoby upoważniającej (pacjent):
+    <input type="text" name="principalName" required />
+  </label>
+
+  <label>
+    PESEL osoby upoważniającej:
+    <input type="text" name="principalPESEL" pattern="\d{11}" title="11 cyfr" required />
+  </label>
+
+  <label>
+    Imię i nazwisko osoby upoważnionej (pełnomocnik, np. kurier):
+    <input type="text" name="proxyName" required />
+  </label>
+
+  <label>
+    Nr dowodu tożsamości osoby upoważnionej:
+    <input type="text" name="proxyID" required />
+  </label>
+
+  <label>
+    Zakres upoważnienia:
+    <input type="text" name="scope" value="Odbiór leków na podstawie recepty" readonly />
+  </label>
+
+  <label>
+    Czas obowiązywania upoważnienia:
+    <input type="date" name="validFrom" required /> do <input type="date" name="validTo" required />
+  </label>
+
+  <label>
+    <input type="checkbox" name="acceptTerms" required />
+    Akceptuję regulamin i potwierdzam, że upoważniam wskazaną osobę do odbioru leków w moim imieniu.
+  </label>
+
+  <label>Podpis osoby upoważniającej (proszę podpisać w polu poniżej):</label>
+  <canvas id="signature-pad" class="signature-pad"></canvas>
+  <button type="button" onclick="clearSignature()">Wyczyść podpis</button>
+
+  <input type="hidden" name="signatureData" id="signatureData" />
+
+  <button type="submit">Wyślij upoważnienie</button>
+</form>
+
+<script>
+  // Simple signature pad implementation
+  const canvas = document.getElementById('signature-pad');
+  const ctx = canvas.getContext('2d');
+  let drawing = false;
+
+  canvas.width = canvas.offsetWidth;
+  canvas.height = canvas.offsetHeight;
+
+  canvas.addEventListener('mousedown', () => drawing = true);
+  canvas.addEventListener('mouseup', () => drawing = false);
+  canvas.addEventListener('mouseout', () => drawing = false);
+  canvas.addEventListener('mousemove', draw);
+
+  function draw(e) {
+    if (!drawing) return;
+    ctx.lineWidth = 2;
+    ctx.lineCap = 'round';
+    ctx.strokeStyle = '#000';
+
+    ctx.lineTo(e.offsetX, e.offsetY);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(e.offsetX, e.offsetY);
+  }
+
+  function clearSignature() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.beginPath();
+  }
+
+  document.getElementById('authorizationForm').addEventListener('submit', function(event) {
+    // Save signature image as data URL in hidden input before submit
+    const signatureDataUrl = canvas.toDataURL();
+    if (signatureDataUrl === canvas.toDataURL('image/png', 0)) {
+      alert('Proszę złożyć podpis.');
+      event.preventDefault();
+      return;
+    }
+    document.getElementById('signatureData').value = signatureDataUrl;
+  });
+</script>
+
+</body>
+</html>

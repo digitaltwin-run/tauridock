@@ -9,10 +9,9 @@ description = "A tool for building Tauri applications in Docker containers"
 authors = [{name = "DigitalTwin Run Team"}]
 readme = "README.md"
 requires-python = ">=3.8"
-license = "MIT"
+license = {text = "MIT"}
 classifiers = [
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
 
@@ -22,6 +21,9 @@ tauridock = "tauri_builder:main"
 [project.optional-dependencies]
 dev = ["pytest", "pytest-cov"]
 
-[tool.setuptools]
-packages = ["tauri_builder"]
-py_modules = ["tauri_builder"]
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["tauri_builder"]
+
+[tool.setuptools.package-data]
+"*" = ["*.yml"]

@@ -123,7 +123,7 @@ jobs:
         run: |
           python tauridock.py \
             --dockerfile ./Dockerfile \
-            --frontend-port 3000 \
+            --frontend-port 3003 \
             --mode build \
             --platforms ${{ matrix.target }} \
             --arch ${{ matrix.arch }} \
@@ -291,7 +291,7 @@ jobs:
         run: |
           python tauridock.py \
             --dockerfile ./Dockerfile \
-            --frontend-port 3000 \
+            --frontend-port 3003 \
             --mode publish \
             --github-repo ${{ github.repository }} \
             --release-tag ${{ github.ref_name }} \

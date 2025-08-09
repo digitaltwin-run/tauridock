@@ -558,7 +558,7 @@ class TauriBuilder:
 @click.command()
 @click.option('--dockerfile', type=click.Path(exists=True), required=True,
               help='Path to Dockerfile for building')
-@click.option('--frontend-port', type=int, default=3000,
+@click.option('--frontend-port', type=int, default=3003,
               help='Port for frontend server')
 @click.option('--mode', type=click.Choice(['dev', 'build', 'publish']), default='build',
               help='Operation mode')
@@ -622,7 +622,7 @@ def main(**kwargs):
     # Build configuration object
     config = BuildConfig(
         dockerfile=Path(final_config['dockerfile']),
-        frontend_port=final_config.get('frontend_port', 3000),
+        frontend_port=final_config.get('frontend_port', 3003),
         mode=final_config.get('mode', 'build'),
         platforms=final_config.get('platforms', 'windows,macos,linux').split(','),
         architectures=final_config.get('architectures', 'x64').split(','),

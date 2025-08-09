@@ -28,7 +28,7 @@ build:
   dockerfile: ./Dockerfile
 
   # Frontend development server port
-  frontend_port: 3000
+  frontend_port: 3003
 
   # Target platforms
   platforms:
@@ -106,7 +106,7 @@ development:
   # Development server settings
   server:
     host: "0.0.0.0"
-    port: 3000
+    port: 3003
     https: false
 
   # Browser to open (optional)

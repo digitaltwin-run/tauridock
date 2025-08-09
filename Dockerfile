@@ -143,7 +143,7 @@ set -e
 # Parse arguments
 PLATFORM=${PLATFORM:-linux}
 ARCH=${ARCH:-x64}
-FRONTEND_PORT=${FRONTEND_PORT:-3000}
+FRONTEND_PORT=${FRONTEND_PORT:-3003}
 MODE=${MODE:-build}
 
 echo "🚀 Tauri Builder"
