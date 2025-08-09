@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Tauri Builder Dev",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/tauridock.py",
+      "args": ["--mode", "dev"],
+      "console": "integratedTerminal"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+# .gitlab-ci.yml
+stages:
+  - test
+  - build
+  - release
+
+variables:
+  DOCKER_DRIVER: overlay2
+
+test:
+  stage: test
+  script:
+    - pip install -r requirements.txt
+    - pytest test_tauri_builder.py
+
+build:
+  stage: build
+  script:
+    - python tauridock.py --mode build
+  artifacts:
+    paths:
+      - dist/
+
+release:
+  stage: release
+  only:
+    - tags
+  script:
+    - python tauridock.py --mode publish

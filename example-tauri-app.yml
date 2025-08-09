@@ -161,7 +161,7 @@
   },
   "build": {
     "distDir": "../dist",
-    "devPath": "http://localhost:3000",
+    "devPath": "http://localhost:3003",
     "beforeDevCommand": "npm run dev",
     "beforeBuildCommand": "npm run build",
     "withGlobalTauri": false

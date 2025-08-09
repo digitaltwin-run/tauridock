@@ -1,0 +1,22 @@
+# k8s/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tauridock
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: tauridock
+  template:
+    metadata:
+      labels:
+        app: tauridock
+    spec:
+      containers:
+      - name: builder
+        image: tauridock:latest
+        resources:
+          limits:
+            memory: "4Gi"
+            cpu: "2"
