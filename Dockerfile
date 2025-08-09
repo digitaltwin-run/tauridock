@@ -53,16 +53,19 @@ RUN apt-get install -y \
 # Windows cross-compilation stage
 FROM base AS windows-builder
 
-# Install Windows cross-compilation tools
-RUN apt-get update && apt-get install -y \
-    gcc-mingw-w64 \
-    g++-mingw-w64 \
-    wine64 \
-    wine32 \
-    wine \
-    mono-devel \
-    osslsigncode \
-    nsis
+# Install Windows cross-compilation tools with more reliable approach
+RUN apt-get update && \
+    # Install essential mingw tools
+    apt-get install -y --no-install-recommends \
+        gcc-mingw-w64 \
+        g++-mingw-w64 && \
+    # Install wine (with fallback handling)
+    (apt-get install -y --no-install-recommends wine64 wine || true) && \
+    # Install additional tools if available
+    (apt-get install -y --no-install-recommends osslsigncode nsis || true) && \
+    # Clean up
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 # Add Windows Rust targets
 RUN rustup target add x86_64-pc-windows-gnu && \

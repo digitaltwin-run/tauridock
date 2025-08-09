@@ -22,7 +22,7 @@
 ### Drzewo katalogów
 
 ```
-tauri-builder/
+tauridock/
 ├── tauri_builder/          # Główny pakiet Python
 │   ├── __init__.py
 │   ├── cli.py             # CLI interface
@@ -106,8 +106,8 @@ class TauriBuilder:
 
 ```bash
 # Clone repo
-git clone https://github.com/digitaltwin-run/tauri-builder.git
-cd tauri-builder
+git clone https://github.com/digitaltwin-run/tauridock.git
+cd tauridock
 
 # Create virtual environment
 python -m venv venv
@@ -155,7 +155,7 @@ pre-commit install
       "type": "python",
       "request": "launch",
       "module": "tauri_builder",
-      "args": ["--debug", "--config", ".tauri-builder.yml"],
+      "args": ["--debug", "--config", ".tauridock.yml"],
       "console": "integratedTerminal"
     },
     {
@@ -176,7 +176,7 @@ pre-commit install
 <!-- .idea/runConfigurations/TauriBuilder.xml -->
 <component name="ProjectRunConfigurationManager">
   <configuration name="TauriBuilder" type="PythonConfigurationType">
-    <module name="tauri-builder" />
+    <module name="tauridock" />
     <option name="SCRIPT_NAME" value="tauri_builder/__main__.py" />
     <option name="PARAMETERS" value="--debug" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
@@ -329,7 +329,7 @@ plugin = MyPlugin
 ### Rejestracja pluginu
 
 ```yaml
-# .tauri-builder.yml
+# .tauridock.yml
 plugins:
   - name: my_plugin
     enabled: true

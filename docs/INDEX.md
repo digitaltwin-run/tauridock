@@ -193,10 +193,10 @@ graph TD
 
 ## 🤝 Wsparcie
 
-- 📧 **Email**: support@tauri-builder.com
-- 💬 **Discord**: [Join our server](https://discord.gg/tauri-builder)
-- 🐛 **Issues**: [GitHub Issues](https://github.com/digitaltwin-run/tauri-builder/issues)
-- 📖 **Wiki**: [GitHub Wiki](https://github.com/digitaltwin-run/tauri-builder/wiki)
+- 📧 **Email**: support@tauridock.com
+- 💬 **Discord**: [Join our server](https://discord.gg/tauridock)
+- 🐛 **Issues**: [GitHub Issues](https://github.com/digitaltwin-run/tauridock/issues)
+- 📖 **Wiki**: [GitHub Wiki](https://github.com/digitaltwin-run/tauridock/wiki)
 
 ---
 
@@ -208,7 +208,7 @@ Ten projekt jest dostępny na licencji MIT. Zobacz [LICENSE](../LICENSE) dla szc
 
 <div align="center">
 
-**[⬆ Powrót do góry](#-tauri-builder---dokumentacja)**
+**[⬆ Powrót do góry](#-tauridock---dokumentacja)**
 
 Stworzone z ❤️ dla społeczności Tauri
 

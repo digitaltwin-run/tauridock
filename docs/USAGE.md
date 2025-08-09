@@ -321,17 +321,17 @@ fi
 
 ```bash
 # Build Docker image
-docker build -t my-tauri-builder .
+docker build -t my-tauridock .
 
 # Run in Docker
 docker run -it --rm \
   -v $(pwd):/app \
   -v /var/run/docker.sock:/var/run/docker.sock \
-  my-tauri-builder \
+  my-tauridock \
   tb build --all
 
 # Lub z docker-compose
-docker-compose run tauri-builder tb build --all
+docker-compose run tauridock tb build --all
 ```
 
 ### Przykład 4: Custom Configuration
@@ -342,7 +342,7 @@ tb build --config ./custom-config.yml
 
 # Override config values
 tb build \
-  --config .tauri-builder.yml \
+  --config .tauridock.yml \
   --platforms windows \
   --override "build.optimize=true"
 
@@ -429,7 +429,7 @@ my-tauri-app/
 ├── src/                    # Frontend source
 ├── src-tauri/             # Tauri/Rust source
 ├── dist/                  # Build output
-├── .tauri-builder.yml     # TB config
+├── .tauridock.yml     # TB config
 ├── Dockerfile             # Docker config
 ├── .env                   # Environment variables
 └── package.json          # Node.js config

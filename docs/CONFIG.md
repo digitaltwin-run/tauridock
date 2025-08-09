@@ -24,17 +24,17 @@
 Tauri Builder szuka pliku konfiguracyjnego w następującej kolejności:
 
 1. `--config` parameter
-2. `.tauri-builder.yml`
-3. `.tauri-builder.yaml`
-4. `tauri-builder.yml`
-5. `tauri-builder.yaml`
+2. `.tauridock.yml`
+3. `.tauridock.yaml`
+4. `tauridock.yml`
+5. `tauridock.yaml`
 6. `.tb.yml`
-7. `~/.config/tauri-builder/config.yml`
+7. `~/.config/tauridock/config.yml`
 
 ### Struktura podstawowa
 
 ```yaml
-# .tauri-builder.yml
+# .tauridock.yml
 version: 1  # Wersja formatu konfiguracji
 
 # Podstawowe ustawienia
@@ -582,7 +582,7 @@ logging:
     
   # File settings
   file:
-    path: ./tauri-builder.log
+    path: ./tauridock.log
     rotate: true
     max_size: 10MB
     max_files: 5
@@ -672,8 +672,8 @@ RUST_BACKTRACE=1
 RUST_LOG=info
 
 # Paths
-TAURI_BUILDER_HOME=/opt/tauri-builder
-TB_CONFIG=./.tauri-builder.yml
+TAURI_BUILDER_HOME=/opt/tauridock
+TB_CONFIG=./.tauridock.yml
 
 # Features
 TB_TELEMETRY=false
@@ -684,9 +684,9 @@ TB_ANALYTICS=false
 
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `TB_CONFIG` | Config file path | `.tauri-builder.yml` |
-| `TB_HOME` | Tauri Builder home | `~/.tauri-builder` |
-| `TB_CACHE` | Cache directory | `~/.tauri-builder/cache` |
+| `TB_CONFIG` | Config file path | `.tauridock.yml` |
+| `TB_HOME` | Tauri Builder home | `~/.tauridock` |
+| `TB_CACHE` | Cache directory | `~/.tauridock/cache` |
 | `TB_LOG_LEVEL` | Log level | `info` |
 | `TB_PARALLEL` | Enable parallel builds | `true` |
 | `TB_DOCKER_IMAGE` | Default Docker image | `rust:latest` |

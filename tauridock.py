@@ -601,7 +601,7 @@ def main(**kwargs):
 
     # Display banner
     console.print(Panel.fit(
-        "🦀 Tauri Builder CLI v1.0.0\n"
+        "🦀 Tauri Builder CLI v1.0.0 \n"
         "Multi-platform Tauri application builder",
         title="Welcome",
         style="bold blue"

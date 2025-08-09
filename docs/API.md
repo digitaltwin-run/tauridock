@@ -22,7 +22,7 @@
 ### Składnia podstawowa
 
 ```bash
-tauri-builder [OPTIONS] [COMMAND] [ARGS]
+tauridock [OPTIONS] [COMMAND] [ARGS]
 tb [OPTIONS] [COMMAND] [ARGS]  # Alias
 ```
 
@@ -32,7 +32,7 @@ tb [OPTIONS] [COMMAND] [ARGS]  # Alias
 |-------|-------|------|-----------|
 | `--help` | `-h` | Wyświetla pomoc | - |
 | `--version` | `-v` | Wyświetla wersję | - |
-| `--config FILE` | `-c` | Ścieżka do pliku konfiguracyjnego | `.tauri-builder.yml` |
+| `--config FILE` | `-c` | Ścieżka do pliku konfiguracyjnego | `.tauridock.yml` |
 | `--verbose` | `-V` | Tryb verbose | `false` |
 | `--quiet` | `-q` | Tryb cichy | `false` |
 | `--debug` | `-d` | Tryb debug | `false` |

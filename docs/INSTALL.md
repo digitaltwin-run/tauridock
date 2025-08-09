@@ -44,13 +44,13 @@
 
 ```bash
 # Przez HTTPS
-git clone https://github.com/digitaltwin-run/tauri-builder.git
+git clone https://github.com/digitaltwin-run/tauridock.git
 
 # Przez SSH
-git clone git@github.com:digitaltwin-run/tauri-builder.git
+git clone git@github.com:digitaltwin-run/tauridock.git
 
 # Wejście do katalogu
-cd tauri-builder
+cd tauridock
 ```
 
 ### 2️⃣ Instalacja Python i zależności
@@ -181,7 +181,7 @@ pip install -e .
 pip install .
 
 # Weryfikacja
-tauri-builder --version
+tauridock --version
 tb --version  # Skrót
 ```
 
@@ -195,7 +195,7 @@ python setup.py sdist bdist_wheel
 pip install dist/tauri_builder-1.0.0-py3-none-any.whl
 
 # Weryfikacja
-which tauri-builder
+which tauridock
 ```
 
 ### Metoda 3: Make
@@ -216,29 +216,29 @@ tb --version
 
 ```bash
 # Pobranie obrazu z Docker Hub
-docker pull digitaltwin-run/tauri-builder:latest
+docker pull digitaltwin-run/tauridock:latest
 
 # Lub z GitHub Container Registry
-docker pull ghcr.io/digitaltwin-run/tauri-builder:latest
+docker pull ghcr.io/digitaltwin-run/tauridock:latest
 
 # Uruchomienie
 docker run -it --rm \
   -v $(pwd):/app \
   -p 3000:3000 \
-  digitaltwin-run/tauri-builder:latest
+  digitaltwin-run/tauridock:latest
 ```
 
 ### Opcja 2: Budowanie lokalnie
 
 ```bash
 # Budowanie obrazu
-docker build -t tauri-builder:local .
+docker build -t tauridock:local .
 
 # Uruchomienie
 docker run -it --rm \
   -v $(pwd):/app \
   -p 3000:3000 \
-  tauri-builder:local
+  tauridock:local
 ```
 
 ### Opcja 3: Docker Compose
@@ -282,8 +282,8 @@ pip --version
 docker --version
 docker ps
 
-# 4. Sprawdź tauri-builder
-python tauri-builder.py --version
+# 4. Sprawdź tauridock
+python tauridock.py --version
 # Lub jeśli zainstalowane globalnie
 tb --version
 
@@ -291,7 +291,7 @@ tb --version
 pip list | grep -E "click|docker|PyYAML|rich|PyGithub"
 
 # 6. Test podstawowy
-python tauri-builder.py --help
+python tauridock.py --help
 ```
 
 ### Test funkcjonalny
@@ -306,7 +306,7 @@ tb setup
 
 # Sprawdź utworzone pliki
 ls -la
-# Powinny być: Dockerfile, .tauri-builder.yml, .env
+# Powinny być: Dockerfile, .tauridock.yml, .env
 
 # Test budowania
 tb build --platforms linux --arch x64 --dry-run
@@ -323,7 +323,7 @@ tb build --platforms linux --arch x64 --dry-run
 ./tb.sh setup
 
 # Lub
-python tauri-builder.py setup --interactive
+python tauridock.py setup --interactive
 ```
 
 ### Konfiguracja manualna
@@ -331,7 +331,7 @@ python tauri-builder.py setup --interactive
 #### 1. Utwórz plik konfiguracyjny
 
 ```yaml
-# .tauri-builder.yml
+# .tauridock.yml
 dockerfile: ./Dockerfile
 frontend_port: 3000
 platforms:
@@ -404,8 +404,8 @@ EOF
 
 ```bash
 # ~/.bashrc
-echo 'alias tb="python /path/to/tauri-builder.py"' >> ~/.bashrc
-echo 'export TAURI_BUILDER_HOME="/path/to/tauri-builder"' >> ~/.bashrc
+echo 'alias tb="python /path/to/tauridock.py"' >> ~/.bashrc
+echo 'export TAURI_BUILDER_HOME="/path/to/tauridock"' >> ~/.bashrc
 source ~/.bashrc
 ```
 
@@ -413,8 +413,8 @@ source ~/.bashrc
 
 ```bash
 # ~/.zshrc
-echo 'alias tb="python /path/to/tauri-builder.py"' >> ~/.zshrc
-echo 'export TAURI_BUILDER_HOME="/path/to/tauri-builder"' >> ~/.zshrc
+echo 'alias tb="python /path/to/tauridock.py"' >> ~/.zshrc
+echo 'export TAURI_BUILDER_HOME="/path/to/tauridock"' >> ~/.zshrc
 source ~/.zshrc
 ```
 
@@ -424,9 +424,9 @@ source ~/.zshrc
 # $PROFILE
 Add-Content $PROFILE @"
 function tb {
-    python C:\path\to\tauri-builder.py `$args
+    python C:\path\to\tauridock.py `$args
 }
-`$env:TAURI_BUILDER_HOME = "C:\path\to\tauri-builder"
+`$env:TAURI_BUILDER_HOME = "C:\path\to\tauridock"
 "@
 ```
 
@@ -490,7 +490,7 @@ Po pomyślnej instalacji:
 1. **[Przeczytaj przewodnik użytkowania](./USAGE.md)** - Naucz się podstawowych komend
 2. **[Skonfiguruj projekt](./CONFIG.md)** - Dostosuj ustawienia
 3. **[Uruchom przykład](./11-EXAMPLES.md)** - Zobacz działający przykład
-4. **[Dołącz do społeczności](https://discord.gg/tauri-builder)** - Uzyskaj pomoc
+4. **[Dołącz do społeczności](https://discord.gg/tauridock)** - Uzyskaj pomoc
 
 ---
 
