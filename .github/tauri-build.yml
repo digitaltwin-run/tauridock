@@ -1,0 +1,403 @@
+name: Tauri Build and Release
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+    tags:
+      - 'v*'
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      platforms:
+        description: 'Platforms to build (comma-separated)'
+        required: false
+        default: 'windows,macos,linux'
+      release:
+        description: 'Create release'
+        required: false
+        type: boolean
+        default: false
+
+env:
+  TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
+  TAURI_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest pytest-cov pytest-mock
+
+      - name: Run unit tests
+        run: |
+          pytest test_tauri_builder.py -v --cov=tauri_builder --cov-report=xml
+
+      - name: Upload coverage reports
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage.xml
+          flags: unittests
+          name: codecov-umbrella
+
+  build-with-script:
+    name: Build with Tauri Builder Script
+    needs: test
+    strategy:
+      matrix:
+        include:
+          - platform: ubuntu-latest
+            target: linux
+            arch: x64
+          - platform: windows-latest
+            target: windows
+            arch: x64
+          - platform: macos-latest
+            target: macos
+            arch: x64
+          - platform: macos-latest
+            target: macos
+            arch: arm64
+    
+    runs-on: ${{ matrix.platform }}
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Setup Docker (Linux)
+        if: matrix.target == 'linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker.io docker-compose
+          sudo systemctl start docker
+          sudo usermod -aG docker $USER
+
+      - name: Setup Docker (Windows)
+        if: matrix.target == 'windows'
+        run: |
+          choco install docker-desktop -y
+
+      - name: Setup Docker (macOS)
+        if: matrix.target == 'macos'
+        run: |
+          brew install --cask docker
+
+      - name: Cache Docker layers
+        uses: actions/cache@v3
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      - name: Build Tauri application
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python tauri-builder.py \
+            --dockerfile ./Dockerfile \
+            --frontend-port 3000 \
+            --mode build \
+            --platforms ${{ matrix.target }} \
+            --arch ${{ matrix.arch }} \
+            --optimize \
+            --docker-cache \
+            --output-dir ./dist
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: tauri-${{ matrix.target }}-${{ matrix.arch }}
+          path: dist/
+          retention-days: 7
+
+  build-native:
+    name: Native Tauri Build
+    needs: test
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: ubuntu-20.04
+            rust-target: x86_64-unknown-linux-gnu
+            
+          - platform: ubuntu-20.04
+            rust-target: aarch64-unknown-linux-gnu
+            
+          - platform: windows-latest
+            rust-target: x86_64-pc-windows-msvc
+            
+          - platform: windows-latest
+            rust-target: aarch64-pc-windows-msvc
+            
+          - platform: macos-latest
+            rust-target: x86_64-apple-darwin
+            
+          - platform: macos-latest
+            rust-target: aarch64-apple-darwin
+
+    runs-on: ${{ matrix.platform }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.rust-target }}
+
+      - name: Setup Rust cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: './src-tauri -> target'
+
+      - name: Install Linux dependencies
+        if: matrix.platform == 'ubuntu-20.04'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libwebkit2gtk-4.0-dev \
+            libgtk-3-dev \
+            libayatana-appindicator3-dev \
+            librsvg2-dev \
+            patchelf
+
+      - name: Install ARM64 cross-compilation tools (Linux)
+        if: matrix.platform == 'ubuntu-20.04' && matrix.rust-target == 'aarch64-unknown-linux-gnu'
+        run: |
+          sudo apt-get install -y \
+            gcc-aarch64-linux-gnu \
+            g++-aarch64-linux-gnu
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Build frontend
+        run: npm run build
+
+      - name: Install Tauri CLI
+        run: npm install -g @tauri-apps/cli
+
+      - name: Build Tauri application
+        env:
+          TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
+          TAURI_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
+        run: |
+          cd src-tauri
+          cargo tauri build --target ${{ matrix.rust-target }}
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: tauri-${{ matrix.rust-target }}
+          path: |
+            src-tauri/target/${{ matrix.rust-target }}/release/bundle/
+          retention-days: 7
+
+  release:
+    name: Create Release
+    needs: [build-with-script, build-native]
+    if: startsWith(github.ref, 'refs/tags/v') || github.event.inputs.release == 'true'
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write
+      
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v3
+        with:
+          path: ./artifacts
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Generate checksums
+        run: |
+          cd artifacts
+          for dir in */; do
+            cd "$dir"
+            for file in *; do
+              if [ -f "$file" ]; then
+                sha256sum "$file" > "$file.sha256"
+              fi
+            done
+            cd ..
+          done
+
+      - name: Prepare release files
+        run: |
+          mkdir -p release-files
+          for dir in artifacts/*/; do
+            platform=$(basename "$dir")
+            cd "$dir"
+            for file in *; do
+              if [ -f "$file" ] && [[ ! "$file" == *.sha256 ]]; then
+                cp "$file" "../../release-files/${platform}-${file}"
+                cp "$file.sha256" "../../release-files/${platform}-${file}.sha256"
+              fi
+            done
+            cd ../..
+          done
+
+      - name: Create Release with Script
+        if: github.event.inputs.release == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python tauri-builder.py \
+            --dockerfile ./Dockerfile \
+            --frontend-port 3000 \
+            --mode publish \
+            --github-repo ${{ github.repository }} \
+            --release-tag ${{ github.ref_name }} \
+            --release-notes ./CHANGELOG.md
+
+      - name: Create GitHub Release (Native)
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v1
+        with:
+          files: release-files/*
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  docker-image:
+    name: Build and Push Docker Image
+    needs: test
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Login to GitHub Container Registry
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            ${{ secrets.DOCKER_USERNAME }}/tauri-builder
+            ghcr.io/${{ github.repository_owner }}/tauri-builder
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=sha
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  notify:
+    name: Send Notifications
+    needs: [release]
+    if: always()
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Send Discord notification
+        if: env.DISCORD_WEBHOOK != ''
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: |
+          if [ "${{ needs.release.result }}" == "success" ]; then
+            curl -H "Content-Type: application/json" \
+              -X POST \
+              -d "{\"content\": \"✅ Tauri build completed successfully for ${{ github.ref_name }}\"}" \
+              $DISCORD_WEBHOOK
+          else
+            curl -H "Content-Type: application/json" \
+              -X POST \
+              -d "{\"content\": \"❌ Tauri build failed for ${{ github.ref_name }}\"}" \
+              $DISCORD_WEBHOOK
+          fi
+
+      - name: Send Slack notification
+        if: env.SLACK_WEBHOOK != ''
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+        run: |
+          if [ "${{ needs.release.result }}" == "success" ]; then
+            curl -X POST -H 'Content-type: application/json' \
+              --data '{"text":"✅ Tauri build completed successfully for ${{ github.ref_name }}"}' \
+              $SLACK_WEBHOOK
+          else
+            curl -X POST -H 'Content-type: application/json' \
+              --data '{"text":"❌ Tauri build failed for ${{ github.ref_name }}"}' \
+              $SLACK_WEBHOOK
+          fi

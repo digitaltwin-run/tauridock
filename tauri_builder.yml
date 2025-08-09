@@ -1,0 +1,315 @@
+# Tauri Builder Configuration File
+# Place this file in your project root as .tauri-builder.yml
+
+# Docker configuration
+docker:
+  # Base Docker image to use
+  image: rust:1.75
+
+  # Use Docker build cache
+  cache: true
+
+  # Additional Docker build arguments
+  build_args:
+    NODE_VERSION: "20"
+    RUST_VERSION: "1.75"
+
+  # Docker network (optional)
+  network: bridge
+
+  # Additional volumes to mount
+  volumes:
+    - "./cache:/cache"
+    - "./node_modules:/app/node_modules"
+
+# Build configuration
+build:
+  # Path to Dockerfile
+  dockerfile: ./Dockerfile
+
+  # Frontend development server port
+  frontend_port: 3000
+
+  # Target platforms
+  platforms:
+    - windows
+    - macos
+    - linux
+
+  # Target architectures
+  architectures:
+    - x64
+    - arm64
+
+  # Application details
+  app:
+    name: "MyTauriApp"
+    version: "1.0.0"
+    identifier: "com.example.mytauriapp"
+
+  # Output directory for built artifacts
+  output_dir: ./dist
+
+  # Enable production optimizations
+  optimize: true
+
+  # Sign applications (requires certificates)
+  sign: false
+
+  # Bundle types per platform
+  bundle_types:
+    windows:
+      - msi
+      - nsis
+      - exe
+    macos:
+      - dmg
+      - app
+    linux:
+      - deb
+      - AppImage
+      - rpm
+      - snap
+
+  # Platform-specific settings
+  platform_settings:
+    windows:
+      # Windows-specific settings
+      certificate_path: "./certs/windows.pfx"
+      certificate_password: "${WINDOWS_CERT_PASSWORD}"
+
+    macos:
+      # macOS-specific settings
+      identity: "Developer ID Application: Your Name"
+      entitlements: "./entitlements.plist"
+      notarize: true
+
+    linux:
+      # Linux-specific settings
+      desktop_file: "./linux/app.desktop"
+      categories: "Development;Utility;"
+
+# Development configuration
+development:
+  # Enable hot reload
+  hot_reload: true
+
+  # Open devtools automatically
+  devtools: true
+
+  # Watch for file changes
+  watch: true
+
+  # Environment file
+  env_file: .env.local
+
+  # Development server settings
+  server:
+    host: "0.0.0.0"
+    port: 3000
+    https: false
+
+  # Browser to open (optional)
+  browser: "default"
+
+# Publishing configuration
+publish:
+  # GitHub repository (owner/repo format)
+  github_repo: "yourusername/your-repo"
+
+  # Use environment variable for token
+  github_token: "${GITHUB_TOKEN}"
+
+  # Release settings
+  release:
+    # Tag format (supports variables: {version}, {date}, {platform})
+    tag_format: "v{version}"
+
+    # Release name format
+    name_format: "Release {version}"
+
+    # Draft releases by default
+    draft: false
+
+    # Mark as prerelease
+    prerelease: false
+
+    # Release notes file
+    notes_file: "./CHANGELOG.md"
+
+    # Auto-generate changelog
+    auto_changelog: true
+
+  # Upload settings
+  upload:
+    # Include checksums
+    checksums: true
+
+    # Checksum algorithm
+    checksum_algorithm: sha256
+
+    # Compress artifacts before upload
+    compress: true
+
+    # Compression format
+    compression_format: zip
+
+  # Distribution channels
+  channels:
+    - stable
+    - beta
+    - nightly
+
+# CI/CD Integration
+ci:
+  # GitHub Actions
+  github_actions:
+    enabled: true
+    workflows:
+      - name: build
+        on:
+          push:
+            branches: [main, develop]
+          pull_request:
+            branches: [main]
+
+      - name: release
+        on:
+          push:
+            tags: ["v*"]
+
+  # GitLab CI
+  gitlab_ci:
+    enabled: false
+    config_file: .gitlab-ci.yml
+
+  # Jenkins
+  jenkins:
+    enabled: false
+    jenkinsfile: Jenkinsfile
+
+# Hooks - custom scripts to run at various stages
+hooks:
+  # Run before build starts
+  pre_build:
+    - "npm run lint"
+    - "npm run test"
+
+  # Run after successful build
+  post_build:
+    - "echo 'Build completed successfully!'"
+    - "./scripts/notify-team.sh"
+
+  # Run before publishing
+  pre_publish:
+    - "./scripts/validate-release.sh"
+
+  # Run after publishing
+  post_publish:
+    - "./scripts/update-docs.sh"
+    - "./scripts/notify-release.sh"
+
+# Notifications
+notifications:
+  # Discord webhook
+  discord:
+    enabled: false
+    webhook_url: "${DISCORD_WEBHOOK}"
+    events:
+      - build_success
+      - build_failure
+      - publish_success
+
+  # Slack webhook
+  slack:
+    enabled: false
+    webhook_url: "${SLACK_WEBHOOK}"
+    channel: "#releases"
+    events:
+      - build_failure
+      - publish_success
+
+  # Email notifications
+  email:
+    enabled: false
+    smtp:
+      host: smtp.gmail.com
+      port: 587
+      username: "${SMTP_USERNAME}"
+      password: "${SMTP_PASSWORD}"
+    recipients:
+      - "team@example.com"
+    events:
+      - build_failure
+      - publish_success
+
+# Advanced settings
+advanced:
+  # Parallel builds
+  parallel_builds: true
+
+  # Maximum parallel jobs
+  max_parallel_jobs: 3
+
+  # Build timeout (in minutes)
+  build_timeout: 60
+
+  # Retry failed builds
+  retry_on_failure: true
+
+  # Maximum retry attempts
+  max_retries: 3
+
+  # Clean workspace before build
+  clean_workspace: true
+
+  # Cache settings
+  cache:
+    # Cache directory
+    directory: "./.tauri-cache"
+
+    # Cache dependencies
+    dependencies: true
+
+    # Cache Rust artifacts
+    rust_artifacts: true
+
+    # Cache Node modules
+    node_modules: true
+
+    # Cache timeout (days)
+    timeout: 7
+
+  # Logging
+  logging:
+    # Log level (debug, info, warning, error)
+    level: info
+
+    # Log file
+    file: "./tauri-builder.log"
+
+    # Rotate logs
+    rotate: true
+
+    # Maximum log file size (MB)
+    max_size: 100
+
+    # Keep last N log files
+    max_files: 10
+
+# Environment variables
+# These will be available during build
+environment:
+  # Common variables
+  NODE_ENV: production
+  RUST_BACKTRACE: 1
+
+  # API endpoints
+  API_URL: "${API_URL:-https://api.example.com}"
+
+  # Feature flags
+  ENABLE_ANALYTICS: true
+  ENABLE_CRASH_REPORTING: true
+
+  # Custom variables
+  CUSTOM_VAR: "value"
