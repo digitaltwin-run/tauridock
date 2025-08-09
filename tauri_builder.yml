@@ -115,7 +115,7 @@ development:
 # Publishing configuration
 publish:
   # GitHub repository (owner/repo format)
-  github_repo: "yourusername/your-repo"
+  github_repo: "digitaltwin-run/your-repo"
 
   # Use environment variable for token
   github_token: "${GITHUB_TOKEN}"

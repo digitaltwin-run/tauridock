@@ -2,8 +2,8 @@
 Python CLI Script dla Tauri Multi-Platform Builder
 # 🦀 Tauri Builder CLI
 
-[![Build Status](https://github.com/yourusername/tauri-builder/workflows/Tauri%20Build%20and%20Release/badge.svg)](https://github.com/yourusername/tauri-builder/actions)
-[![Docker Pulls](https://img.shields.io/docker/pulls/yourusername/tauri-builder)](https://hub.docker.com/r/yourusername/tauri-builder)
+[![Build Status](https://github.com/digitaltwin-run/tauri-builder/workflows/Tauri%20Build%20and%20Release/badge.svg)](https://github.com/digitaltwin-run/tauri-builder/actions)
+[![Docker Pulls](https://img.shields.io/docker/pulls/digitaltwin-run/tauri-builder)](https://hub.docker.com/r/digitaltwin-run/tauri-builder)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Python Version](https://img.shields.io/badge/python-3.8%2B-blue)](https://www.python.org/downloads/)
 
@@ -36,7 +36,7 @@ Zaawansowane narzędzie CLI do budowania aplikacji Tauri dla wszystkich platform
 
 ```bash
 # Klonuj repozytorium
-git clone https://github.com/yourusername/tauri-builder.git
+git clone https://github.com/digitaltwin-run/tauri-builder.git
 cd tauri-builder
 
 # Zainstaluj zależności
@@ -216,10 +216,10 @@ docker buildx build --platform linux/amd64,linux/arm64 -t tauri-builder .
 
 ```bash
 # Pobierz obraz z Docker Hub
-docker pull yourusername/tauri-builder:latest
+docker pull digitaltwin-run/tauri-builder:latest
 
 # Lub z GitHub Container Registry
-docker pull ghcr.io/yourusername/tauri-builder:latest
+docker pull ghcr.io/digitaltwin-run/tauri-builder:latest
 ```
 
 ### Uruchomienie w kontenerze
@@ -414,7 +414,7 @@ rustup target add aarch64-unknown-linux-gnu
 
 ### Zgłaszanie błędów
 
-Używaj [GitHub Issues](https://github.com/yourusername/tauri-builder/issues) z następującymi informacjami:
+Używaj [GitHub Issues](https://github.com/digitaltwin-run/tauri-builder/issues) z następującymi informacjami:
 
 - Wersja Python i Docker
 - System operacyjny
