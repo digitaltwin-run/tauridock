@@ -1,54 +1,46 @@
 {
+  "$schema": "../node_modules/@tauri-apps/cli/schema.json",
   "build": {
-    "beforeDevCommand": "",
     "beforeBuildCommand": "",
-    "devPath": "../app",
-    "distDir": "../app",
-    "withGlobalTauri": false
+    "beforeDevCommand": "docker run -d -p 8080:80 nginx:alpine",
+    "frontendDist": "../app",
+    "devUrl": "http://localhost:8080"
   },
-  "package": {
-    "productName": "My Tauri App",
-    "version": "1.0.0"
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "createUpdaterArtifacts": false,
+    "publisher": "Your Name",
+    "copyright": "Copyright (c) 2025",
+    "category": "DeveloperTool",
+    "shortDescription": "My Tauri App",
+    "longDescription": "A cross-platform desktop application built with Tauri"
   },
-  "tauri": {
-    "allowlist": {
-      "all": false,
-      "shell": {
-        "all": false,
-        "open": true
-      },
-      "os": {
-        "all": true
-      },
-      "app": {
-        "all": true
-      }
-    },
-    "bundle": {
-      "active": true,
-      "targets": "all",
-      "identifier": "com.example.myapp",
-      "icon": [
-        "icons/32x32.png",
-        "icons/128x128.png",
-        "icons/128x128@2x.png",
-        "icons/icon.icns",
-        "icons/icon.ico"
-      ]
-    },
-    "security": {
-      "csp": null
-    },
+  "productName": "My Tauri App",
+  "version": "1.0.0",
+  "identifier": "com.example.mytauriapp",
+  "plugins": {},
+  "app": {
     "windows": [
       {
-        "fullscreen": false,
-        "resizable": true,
         "title": "My Tauri App",
         "width": 800,
         "height": 600,
         "minWidth": 400,
-        "minHeight": 300
+        "minHeight": 300,
+        "resizable": true,
+        "fullscreen": false
       }
-    ]
+    ],
+    "security": {
+      "csp": null
+    }
   }
 }

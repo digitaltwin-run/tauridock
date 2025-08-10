@@ -1,8 +1,9 @@
 .idea
+Cargo.lock
 venv
 node_modules
 dist
-Cargo.lock
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
